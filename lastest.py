@@ -12,6 +12,7 @@ import neopixel
 import sys
 
 # data store
+ec = email_content()
 sys.stdout = open('/home/pi/data/experimentData.txt','a')
 print('aa')
 
@@ -104,6 +105,7 @@ class email_content(object):
                 self.sentence = ''
 
 def processingImage():
+        
         nowDateTime = datetime.datetime.now()
         strDateTime = nowDateTime.strftime('%Y-%m-%d %H:%M:%S')
         camera.annotate_text = "Date: %s" % strDateTime
@@ -111,38 +113,43 @@ def processingImage():
         camera.capture('/home/pi/data/backup_%s.jpg' %strDateTime)
         #print('tic')
         r,g,b = get_picture('/home/pi/data/temp.jpg')
-        get_HSV_picture('/home/pi/data/temp.jpg')
+        h,s,v = get_HSV_picture('/home/pi/data/temp.jpg')
         #print('tok')
 
         # image Processing
-        r1,g1,b1 = point_avg_rgb(r,g,b, point1, seg_range)
-        r2,g2,b2 = point_avg_rgb(r,g,b, point2, seg_range)
-        r3,g3,b3 = point_avg_rgb(r,g,b, point3, seg_range)
-        r4,g4,b4 = point_avg_rgb(r,g,b, point4, seg_range)
-        r5,g5,b5 = point_avg_rgb(r,g,b, point5, seg_range)
-        r6,g6,b6 = point_avg_rgb(r,g,b, point6, seg_range)
-        r7,g7,b7 = point_avg_rgb(r,g,b, point7, seg_range)
-        r8,g8,b8 = point_avg_rgb(r,g,b, point8, seg_range)
-        r9,g9,b9 = point_avg_rgb(r,g,b, point9, seg_range)
-        r10,g10,b10 = point_avg_rgb(r,g,b, point10, seg_range)
+        r_,g_,b_ = point_avg_rgb(1,r,g,b, point1, seg_range)
+        h_,s_,v_ = point_avg_hsv(2,h,s,v, point1, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(3,r,g,b, point2, seg_range)
+        h_,s_,v_ = point_avg_hsv(4,h,s,v, point2, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(5,r,g,b, point3, seg_range)
+        h_,s_,v_ = point_avg_hsv(6,h,s,v, point3, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(7,r,g,b, point4, seg_range)
+        h_,s_,v_ = point_avg_hsv(8,h,s,v, point4, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(9,r,g,b, point5, seg_range)
+        h_,s_,v_ = point_avg_hsv(10,h,s,v, point5, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(11,r,g,b, point6, seg_range)
+        h_,s_,v_ = point_avg_hsv(12,h,s,v, point6, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(13,r,g,b, point7, seg_range)
+        h_,s_,v_ = point_avg_hsv(14,h,s,v, point7, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(15,r,g,b, point8, seg_range)
+        h_,s_,v_ = point_avg_hsv(16,h,s,v, point8, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(17,r,g,b, point9, seg_range)
+        h_,s_,v_ = point_avg_hsv(18,h,s,v, point9, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
+        r_,g_,b_ = point_avg_rgb(19,r,g,b, point10, seg_range)
+        h_,s_,v_ = point_avg_hsv(20,h,s,v, point10, seg_range)
+        ec.add_content(r_,g_,b_,h_,s_,v_)
 
-        mail = """
-        Capture date : %s
+        mail =  str(strDateTime) + '\n' + ec.sentence + '\n' + 'Body Forecast'
 
-        data 01 : %s , %s , %s
-        data 02 : %s , %s , %s
-        data 03 : %s , %s , %s
-        data 04 : %s , %s , %s
-        data 05 : %s , %s , %s
-        data 06 : %s , %s , %s
-        data 07 : %s , %s , %s
-        data 08 : %s , %s , %s
-        data 09 : %s , %s , %s
-        data 10 : %s , %s , %s
-        
-        Body Forecast
-
-        """ %(strDateTime ,  r1, g1, b1,  r2, g2, b2,  r3, g3, b3,  r4, g4, b4,  r5, g5, b5, r6, g6, b6,  r7, g7, b7,  r8, g8, b8,  r9, g9, b9,  r10, g10, b10)
 
 print('ready')
 try:

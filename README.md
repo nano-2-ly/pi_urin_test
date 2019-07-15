@@ -45,9 +45,9 @@ point9 = [459,1627]
 point10 = [1818,2232]
 
 # Serial Communication setting
-#ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1)
-#ser.flushInput()
-#ser.flushOutput()
+ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1)
+ser.flushInput()
+ser.flushOutput()
 
 # Email send
 def send_mail(rgb):
@@ -106,7 +106,7 @@ class email_content(object):
         def clear_content(self,):
                 self.sentence = ''
 ec = email_content()
-def processingImage():
+def processingImage(color):
         ec.clear_content()
         nowDateTime = datetime.datetime.now()
         strDateTime = nowDateTime.strftime('%Y-%m-%d %H:%M:%S')
@@ -150,38 +150,52 @@ def processingImage():
         h_,s_,v_ = point_avg_hsv(h,s,v, point10, seg_range)
         ec.add_content(10,r_,g_,b_,h_,s_,v_)
 
-        mail =  str(strDateTime) + '\n' + ec.sentence + '\n' + 'Body Forecast'
+        mail =  str(strDateTime) + '\n' + color + '\n' + ec.sentence + '\n' + 'Body Forecast'
         return mail
 
 print('ready')
-'''
+
 try:
-        #while (1):
-                # a = str(raw_input('press z key')) # this line for test
-                #ser.flushInput()
-                #data = ser.readline()
-                # ser.write("aaaaaa\r\n")
+        while (1):
+                #a = str(raw_input('press z key')) # this line for test
+                ser.flushInput()
+                data = ser.readline()
+                #ser.write("aaaaaa\r\n")
+        
+                if data == 'r\r\n': # embedded
+                        print('captured!')
+                        #pixels.fill((255, 0, 0, 0))
+                        #pixels.show()
+                        mail = processingImage('r')
+                        print(mail)
+                        send_mail(mail)
+                        print('done')
+                elif data == 'g\r\n': # embedded
+                        print('captured!')
+                        #pixels.fill((255, 0, 0, 0))
+                        #pixels.show()
+                        mail = processingImage('g')
+                        print(mail)
+                        send_mail(mail)
+                        print('done')
+                elif data == 'b\r\n': # embedded
+                        print('captured!')
+                        #pixels.fill((255, 0, 0, 0))
+                        #pixels.show()
+                        mail = processingImage('b')
+                        print(mail)
+                        send_mail(mail)
+                        print('done')
+                elif data == 'w\r\n': # embedded
+                        print('captured!')
+                        #pixels.fill((255, 0, 0, 0))
+                        #pixels.show()
+                        mail = processingImage('w')
+                        print(mail)
+                        send_mail(mail)
+                        print('done')
                 
-                if GPIO.input(8) == GPIO.HIGH: # experiment
-                        GPIO.output(3,False) #initialize
-                        GPIO.output(5,True)
-                
-                processingImage()
-                print('done')
-                
-                
-                #if data == 'z': # embedded
-'''                
-while 1:
-    print('captured!')
-    #pixels.fill((255, 0, 0, 0))
-    #pixels.show()
-    mail = processingImage()
-    print(mail)
-    send_mail(mail)
-    print('done')
-    
-    time.sleep(10)
+                time.sleep(10)
 #except KeyboardInterrupt :
 #        print('ecsape')
 

@@ -1,4 +1,3 @@
-~~~
 from picamera import PiCamera
 from time import sleep
 import datetime
@@ -8,9 +7,11 @@ import cv2
 import numpy as np 
 from matplotlib import pyplot as plt 
 import serial
-import board
+#import board
 #import neopixel
 import sys
+import time
+
 
 # data store
 #sys.stdout = open('/home/pi/data/experimentData.txt','a')
@@ -21,9 +22,9 @@ print('aa')
 num_pixels = 8
 #pixels = neopixel.Neopixel(board.D18, num_pixels)
 #ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
-pixels.fill((255, 0, 0, 0))
-pixels.show()
+#pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
+#pixels.fill((255, 0, 0, 0))
+#pixels.show()
 
 # camera setting
 camera = PiCamera()
@@ -59,7 +60,7 @@ def send_mail(rgb):
     message['subject'] = 'walden_experiment_data'
     message['From'] = 'jhs8891@gmail.com'
     message['To'] = 'jhs8891@gmail.com'
-    smtp.sendmail("jhs8891@gmail.com", "nanotoly@naver.com", message.as_string())
+    smtp.sendmail("jhs8891@gmail.com", "ding991207@gmail.com", message.as_string())
     smtp.quit()
 
 # RGB extraction
@@ -106,7 +107,7 @@ class email_content(object):
                 self.sentence = ''
 ec = email_content()
 def processingImage():
-        
+        ec.clear_content()
         nowDateTime = datetime.datetime.now()
         strDateTime = nowDateTime.strftime('%Y-%m-%d %H:%M:%S')
         camera.annotate_text = "Date: %s" % strDateTime
@@ -171,16 +172,16 @@ try:
                 
                 #if data == 'z': # embedded
 '''                
-print('captured!')
-#pixels.fill((255, 0, 0, 0))
-#pixels.show()
-mail = processingImage()
-print(mail)
-send_mail(mail)
-print('done')
+while 1:
+    print('captured!')
+    #pixels.fill((255, 0, 0, 0))
+    #pixels.show()
+    mail = processingImage()
+    print(mail)
+    send_mail(mail)
+    print('done')
     
+    time.sleep(10)
 #except KeyboardInterrupt :
 #        print('ecsape')
 
-
-~~~
